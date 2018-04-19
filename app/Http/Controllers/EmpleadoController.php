@@ -15,6 +15,8 @@ class EmpleadoController extends Controller
     public function index()
     {
         //
+        $empleados = Empleado::orderBy('nombre', "ASC")->paginate(10);
+        return view("empleado.index",compact("empleados"));
     }
 
     /**
@@ -47,6 +49,8 @@ class EmpleadoController extends Controller
     public function show(Empleado $empleado)
     {
         //
+        return view("empleado.show",compact("empleado"));
+
     }
 
     /**
