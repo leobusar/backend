@@ -27,6 +27,7 @@ class EmpleadoController extends Controller
     public function create()
     {
         //
+        return view("empleado.create");
     }
 
     /**
@@ -38,6 +39,19 @@ class EmpleadoController extends Controller
     public function store(Request $request)
     {
         //
+         request()->validate([
+            'nombre' => 'required',
+            'telefono' => 'required',
+            'documento' => 'required',
+            'fecha_nac' => 'required'
+        ]);
+
+
+        Empleado::create($request->all());
+
+
+        return redirect()->route('empleado.index')
+                        ->with('success','Empleado ha sido creado.');       
     }
 
     /**
@@ -61,7 +75,7 @@ class EmpleadoController extends Controller
      */
     public function edit(Empleado $empleado)
     {
-        //
+        return view("empleado.edit",compact("empleado"));
     }
 
     /**
@@ -73,7 +87,17 @@ class EmpleadoController extends Controller
      */
     public function update(Request $request, Empleado $empleado)
     {
-        //
+        request()->validate([
+            'nombre' => 'required',
+            'telefono' => 'required',
+            'documento' => 'required',
+            'fecha_nac' => 'required'
+        ]);
+
+        $empleado->update($request->all());
+
+        return redirect()->route('empleado.show', $empleado->id)
+                        ->with('success','Empleado actualizado');
     }
 
     /**
@@ -85,5 +109,9 @@ class EmpleadoController extends Controller
     public function destroy(Empleado $empleado)
     {
         //
+        $empleado->delete();
+
+        return redirect()->route('empleado.index')
+                        ->with('success','Empleado eliminado exitosamente');
     }
 }
